@@ -27,3 +27,12 @@ app:
     secret:
       username: ${database_username}
       password: ${database_password}
+
+# Right-size catalog resources
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 50m
+    memory: 128Mi
