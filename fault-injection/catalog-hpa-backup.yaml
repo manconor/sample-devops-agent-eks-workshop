@@ -1,0 +1,60 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  annotations:
+    meta.helm.sh/release-name: catalog
+    meta.helm.sh/release-namespace: catalog
+  creationTimestamp: "2026-11-09T02:42:53Z"
+  labels:
+    app.kubernetes.io/component: service
+    app.kubernetes.io/instance: catalog
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/owner: retail-store-sample
+    helm.sh/chart: catalog-1.3.0
+  name: catalog
+  namespace: catalog
+  resourceVersion: "389952"
+  uid: 167fb2b4-8e7a-4ba5-b56b-0b2401332043
+spec:
+  maxReplicas: 10
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 70
+        type: Utilization
+    type: Resource
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: catalog
+status:
+  conditions:
+  - lastTransitionTime: "2026-11-09T02:43:08Z"
+    message: recommended size matches current size
+    reason: ReadyForNewScale
+    status: "True"
+    type: AbleToScale
+  - lastTransitionTime: "2026-11-09T18:36:05Z"
+    message: the HPA was able to successfully calculate a replica count from cpu resource
+      utilization (percentage of request)
+    reason: ValidMetricFound
+    status: "True"
+    type: ScalingActive
+  - lastTransitionTime: "2026-11-09T18:41:21Z"
+    message: the desired replica count is more than the maximum replica count
+    reason: TooManyReplicas
+    status: "True"
+    type: ScalingLimited
+  currentMetrics:
+  - resource:
+      current:
+        averageUtilization: 129
+        averageValue: 2761m
+      name: cpu
+    type: Resource
+  currentReplicas: 10
+  desiredReplicas: 10
+  lastScaleTime: "2026-11-09T18:39:06Z"

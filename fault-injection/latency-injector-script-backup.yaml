@@ -1,0 +1,31 @@
+apiVersion: v1
+data:
+  inject-latency.sh: |
+    #!/bin/sh
+    # Add random latency (300-500ms) to outbound traffic using tc
+    apk add --no-cache iproute2 stress-ng >/dev/null 2>&1 || true
+
+    # Add latency to eth0 interface - 400ms +/- 100ms (300-500ms range)
+    tc qdisc add dev eth0 root netem delay 400ms 100ms distribution normal 2>/dev/null ||     tc qdisc change dev eth0 root netem delay 400ms 100ms distribution normal
+
+    echo "Latency injection active: 300-500ms on outbound traffic"
+    echo "Starting EXTREME CPU stress workers..."
+
+    # Start extreme CPU stress - 8 workers at 100% load, aggressive settings
+    stress-ng --cpu 8 --cpu-load 100 --cpu-method all --aggressive --timeout 0 &
+
+    # Keep container running and log periodically
+    while true; do
+      echo "$(date): Latency + CPU stress running"
+      sleep 30
+    done
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"inject-latency.sh":"#!/bin/sh\n# Add random latency (300-500ms) to outbound traffic using tc\napk add --no-cache iproute2 stress-ng \u003e/dev/null 2\u003e\u00261 || true\n\n# Add latency to eth0 interface - 400ms +/- 100ms (300-500ms range)\ntc qdisc add dev eth0 root netem delay 400ms 100ms distribution normal 2\u003e/dev/null ||     tc qdisc change dev eth0 root netem delay 400ms 100ms distribution normal\n\necho \"Latency injection active: 300-500ms on outbound traffic\"\necho \"Starting EXTREME CPU stress workers...\"\n\n# Start extreme CPU stress - 8 workers at 100% load, aggressive settings\nstress-ng --cpu 8 --cpu-load 100 --cpu-method all --aggressive --timeout 0 \u0026\n\n# Keep container running and log periodically\nwhile true; do\n  echo \"$(date): Latency + CPU stress running\"\n  sleep 30\ndone\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"latency-injector-script","namespace":"catalog"}}
+  creationTimestamp: "2026-11-09T18:33:32Z"
+  name: latency-injector-script
+  namespace: catalog
+  resourceVersion: "382411"
+  uid: 089b2001-1116-4814-b785-3129b7194f79

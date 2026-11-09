@@ -6,7 +6,7 @@ set -e
 
 NAMESPACE="carts"
 DEPLOYMENT="carts"
-BACKUP_FILE="~/fault-injection/carts-original.yaml"
+BACKUP_FILE="$HOME/fault-injection/carts-original.yaml"
 
 echo "=== Cart Memory Leak Injection ==="
 echo "Target: $DEPLOYMENT in namespace $NAMESPACE"

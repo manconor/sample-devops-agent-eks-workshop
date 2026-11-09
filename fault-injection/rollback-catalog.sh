@@ -6,7 +6,7 @@ set -e
 
 NAMESPACE="catalog"
 DEPLOYMENT="catalog"
-BACKUP_FILE="~/fault-injection/catalog-original.yaml"
+BACKUP_FILE="$HOME/fault-injection/catalog-original.yaml"
 
 echo "=== Catalog Service Fault Rollback ==="
 echo ""
