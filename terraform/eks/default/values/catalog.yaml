@@ -29,17 +29,10 @@ app:
       password: ${database_password}
 
 # Right-size catalog resources
-
-autoscaling:
-  enabled: true
-  minReplicas: 1
-  maxReplicas: 1
-  targetCPUUtilizationPercentage: 70
-
 resources:
   requests:
-    cpu: 10m
+    cpu: 25m
     memory: 64Mi
   limits:
-    cpu: 10m
+    cpu: 50m
     memory: 128Mi
